@@ -44,7 +44,7 @@ class HomePage extends StatelessWidget {
                       '${surah.numberOfVerses} Ayat | ${surah.revelation?.id ?? 'Error...'}'),
                   trailing: Text(surah.name?.short ?? 'Error...'),
                   onTap: () {
-                    Get.to(DetailSurahPage(), arguments: surah);
+                    Get.to(const DetailSurahPage(), arguments: surah);
                   },
                 );
               },
