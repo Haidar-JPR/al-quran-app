@@ -33,7 +33,7 @@ class IntrodutionView extends StatelessWidget {
             Lottie.asset('assets/lotties/quran.json', width: 400),
             SizedBox(height: 30),
             ElevatedButton(
-              onPressed: () => Get.to(HomePage()),
+              onPressed: () => Get.offAll(HomePage()),
               child: Text(
                 'GET STARTED',
               ),
