@@ -1,21 +1,25 @@
-// import 'dart:convert';
+import 'dart:convert';
 
-// import 'package:al_quran_app/App/data/models/surah.dart';
-// import 'package:http/http.dart' as http;
+import 'package:al_quran_app/App/data/models/ayat.dart';
+import 'package:al_quran_app/App/data/models/surah.dart';
+import 'package:http/http.dart' as http;
 
-// void main() async {
-//   Uri url = Uri.parse("https://api.quran.gading.dev/surah");
-//   var response = await http.get(url);
+void main() async {
+  Uri url = Uri.parse("https://api.quran.gading.dev/surah/108/1");
+  var response = await http.get(url);
 
-//   // Diubah ke tipe object
-//   // print(response.body);
+  Map<String, dynamic> data = json.decode(response.body)["data"];
 
-//   List data = (json.decode(response.body) as Map<String, dynamic>)["data"];
+  Map<String, dynamic> dataModel = {
+    "number": data['number'],
+    "meta": data['meta'],
+    "text": data['text'],
+    "translation": data['translation'],
+    "audio": data['audio'],
+    "tafsir": data['tafsir']
+  };
 
-//   // print(data[113]);
+  Ayat ayat = Ayat.fromJson(dataModel);
 
-//   // Data raw dari API -> dimasukkan ke Model Surah
-//   Surah dataSurah = Surah.fromJson(data[113]);
-
-//   print(dataSurah.toJson());
-// }
+  print(ayat.tafsir?.id?.short);
+}
