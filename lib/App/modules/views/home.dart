@@ -14,7 +14,22 @@ class HomePage extends StatelessWidget {
     final home = Get.put(HomeController()); //NOTE: Inject depedency
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home View'),
+        title: Text(
+          'Al-Quran',
+          style: whiteTextStyle.copyWith(
+            fontWeight: bold,
+            color: ayatBgColor,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.search,
+              color: ayatBgColor,
+            ),
+          ),
+        ],
         centerTitle: true,
       ),
       body: FutureBuilder<List<Surah>>(
