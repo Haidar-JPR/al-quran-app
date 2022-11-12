@@ -1,3 +1,4 @@
+import 'package:al_quran_app/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,12 +38,26 @@ class HomePage extends StatelessWidget {
                     .data![index]; //NOTE: Agar bisa mengambil per satu surah
                 return ListTile(
                   leading: CircleAvatar(
-                    child: Text('${index + 1}'),
+                    backgroundColor: secondColor,
+                    child: Text(
+                      '${index + 1}',
+                      style: whiteTextStyle,
+                    ),
                   ),
-                  title: Text(surah.name?.transliteration?.id ?? 'Error...'),
+                  title: Text(
+                    surah.name?.transliteration?.id ?? 'Error...',
+                    style: whiteTextStyle,
+                  ),
                   subtitle: Text(
-                      '${surah.numberOfVerses} Ayat | ${surah.revelation?.id ?? 'Error...'}'),
-                  trailing: Text(surah.name?.short ?? 'Error...'),
+                    '${surah.numberOfVerses} Ayat | ${surah.revelation?.id ?? 'Error...'}',
+                    style: greyTextStyle,
+                  ),
+                  trailing: Text(
+                    surah.name?.short ?? 'Error...',
+                    style: whiteTextStyle.copyWith(
+                      color: secondColor,
+                    ),
+                  ),
                   onTap: () {
                     Get.to(const DetailSurahPage(), arguments: surah);
                   },

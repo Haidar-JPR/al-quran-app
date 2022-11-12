@@ -19,7 +19,10 @@ class DetailSurahPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           surah.name?.transliteration?.id ?? 'Error...',
-          style: whiteTextStyle,
+          style: whiteTextStyle.copyWith(
+            color: ayatBgColor,
+            fontWeight: bold,
+          ),
         ),
         centerTitle: true,
       ),
@@ -28,27 +31,31 @@ class DetailSurahPage extends StatelessWidget {
         children: [
           //NOTE: Card 1
           Card(
+            color: ayatColor.withOpacity(0.3),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(whiteSpace),
+            ),
             child: Padding(
               padding: EdgeInsets.all(whiteSpace),
               child: Column(
                 children: [
                   Text(
                     surah.name?.transliteration?.id ?? 'Error..',
-                    style: blackTextStyle.copyWith(
+                    style: whiteTextStyle.copyWith(
                       fontSize: 20,
                       fontWeight: bold,
                     ),
                   ),
                   Text(
                     '( ${surah.name?.translation?.id ?? 'Error..'} )',
-                    style: blackTextStyle.copyWith(
+                    style: whiteTextStyle.copyWith(
                       fontSize: 16,
                     ),
                   ),
                   SizedBox(height: whiteSpace),
                   Text(
                     '${surah.numberOfVerses} Ayat | ${surah.revelation?.id}',
-                    style: blackTextStyle,
+                    style: whiteTextStyle,
                   ),
                 ],
               ),
@@ -58,86 +65,105 @@ class DetailSurahPage extends StatelessWidget {
 
           //NOTE: Build content
           FutureBuilder<detail.DetailSurah>(
-              future: detailSurahC.getDetailSurah(surah.number.toString()),
-              builder: (context, snapshot) {
-                //NOTE: Snapshot adalah data api
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
+            future: detailSurahC.getDetailSurah(surah.number.toString()),
+            builder: (context, snapshot) {
+              //NOTE: Snapshot adalah data api
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
 
-                if (!snapshot.hasData) {
-                  return const Text('Tidak Ada Data.');
-                }
-                return Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: snapshot.data?.verses?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      if (snapshot.data?.verses?.length == 0) {
-                        return const SizedBox();
-                      }
-                      detail.Verse? ayat = snapshot.data?.verses?[index];
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Card(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: whiteSpace + 10,
+              if (!snapshot.hasData) {
+                return const Text('Tidak Ada Data.');
+              }
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: snapshot.data?.verses?.length ?? 0,
+                itemBuilder: (context, index) {
+                  if (snapshot.data?.verses?.length == 0) {
+                    return const SizedBox();
+                  }
+                  detail.Verse? ayat = snapshot.data?.verses?[index];
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Card(
+                        color: mainColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(whiteSpace + 10),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: whiteSpace + 10,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: secondColor,
+                                child: Text(
+                                  '${index + 1}',
+                                  style: whiteTextStyle.copyWith(
+                                    fontWeight: bold,
+                                  ),
+                                ),
                               ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              Row(
                                 children: [
-                                  CircleAvatar(child: Text('${index + 1}')),
-                                  Row(
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(
-                                            Icons.bookmark_border_outlined),
-                                      ),
-                                      IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(Icons.play_arrow),
-                                      ),
-                                    ],
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.bookmark_border_outlined,
+                                      color: thirdColor,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.play_arrow,
+                                      color: thirdColor,
+                                    ),
                                   ),
                                 ],
                               ),
-                            ),
+                            ],
                           ),
-                          const SizedBox(height: 10),
-                          Text(
-                            ayat!.text?.arab ?? 'Error..',
-                            style: blackTextStyle.copyWith(fontSize: 20),
-                            textAlign: TextAlign.end,
-                          ),
-                          Text(
-                            ayat.text?.transliteration?.en ?? 'Error..',
-                            style: blackTextStyle.copyWith(
-                              fontSize: 12,
-                              fontStyle: FontStyle.italic,
-                            ),
-                            textAlign: TextAlign.end,
-                          ),
-                          SizedBox(height: whiteSpace + 10),
-                          Text(
-                            ayat.translation?.id ?? 'Error..',
-                            style: blackTextStyle.copyWith(fontSize: 14),
-                            textAlign: TextAlign.justify,
-                          ),
-                          SizedBox(height: whiteSpace),
-                        ],
-                      );
-                    },
-                  ),
-                );
-              })
+                        ),
+                      ),
+                      SizedBox(height: whiteSpace),
+                      Text(
+                        ayat!.text?.arab ?? 'Error..',
+                        style: whiteTextStyle.copyWith(
+                          fontSize: 20,
+                          color: ayatBgColor,
+                        ),
+                        textAlign: TextAlign.end,
+                      ),
+                      Text(
+                        ayat.text?.transliteration?.en ?? 'Error..',
+                        style: whiteTextStyle.copyWith(
+                          fontSize: 12,
+                          fontStyle: FontStyle.italic,
+                          color: ayatBgColor,
+                        ),
+                        textAlign: TextAlign.justify,
+                      ),
+                      SizedBox(height: whiteSpace + 10),
+                      Text(
+                        ayat.translation?.id ?? 'Error..',
+                        style: whiteTextStyle.copyWith(fontSize: 14),
+                        textAlign: TextAlign.justify,
+                      ),
+                      SizedBox(height: whiteSpace),
+                    ],
+                  );
+                },
+              );
+            },
+          )
         ],
       ),
     );
